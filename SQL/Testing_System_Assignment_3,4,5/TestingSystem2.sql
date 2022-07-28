@@ -300,7 +300,7 @@ AND length(FullName) = (SELECT max(length(FullName)) FROM `Account` WHERE Depart
 -- cte : tạo ra 1 bảng dữ liệu tạm , bảng dữ liệu này chỉ được dùng trong câu truy vấn hiện tại
 WITH CTE_DepartmentID3 AS (
 SELECT * FROM `Accout` WHERE DepartmentID = 3
-)  -- CTE_DepartmentID3
+)  -- CTE_DepartmentID3 
 SELECT * FROM CTE_DepartmentID3
 WHERE length(FullName) = (SELECT max(length(FullName)) FROM CTE_DepartmentID3);
 
@@ -465,13 +465,26 @@ SELECT * FROM `Account`;
 
 DROP TABLE IF EXISTS  CTE_Sale;
 CREATE VIEW CTE_Sale AS
-WITH CTE_Sale AS (
-SELECT A.AccountID,A.DepartmentID, D.DepartmentName 
-FROM account A
-INNER JOIN department D ON A.DepartmentID = D.DepartmentID
-WHERE D.DepartmentName = 'Sale'
-)  
+WITH CTE_Sale AS(
+SELECT a.AccountID, a.DepartmentID, d.DepartmentName
+FROM `account` a
+INNER JOIN department d ON a.DepartmentID = d.DepartmentID
+WHERE d.DepartmentName = 'Sale'
+)
 SELECT *FROM CTE_Sale;
 
+-- Question 2: Tạo view có chứa thông tin các account tham gia vào nhiều group nhất
+SELECT * FROM `group`;
+SELECT * FROM `Account`;
+SELECT * FROM `GroupAccount`;
+
+WITH CTE_view AS(
+SELECT COUNT( ga.AccountID), g.GroupName, g.GroupID
+FROM `GroupAccount`ga
+INNER JOIN `group` g ON ga.AccountID = g.GroupID
+WHERE g.GroupName
+)
+SELECT *FROM CTE_view;
+-- chưa rõ 
 
 
